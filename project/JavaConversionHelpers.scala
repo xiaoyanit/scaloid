@@ -12,6 +12,8 @@ trait JavaConversionHelpers {
       case _ => cls.getInterfaces.headOption
     }
 
+  def isPublic(m: Member): Boolean = Modifier.isPublic(m.getModifiers)
+  def isPublic(c: Class[_]): Boolean = Modifier.isPublic(c.getModifiers)
   def isAbstract(m: Member): Boolean = Modifier.isAbstract(m.getModifiers)
   def isAbstract(c: Class[_]): Boolean = Modifier.isAbstract(c.getModifiers)
   def isFinal(m: Member): Boolean = Modifier.isFinal(m.getModifiers)
@@ -28,6 +30,7 @@ trait JavaConversionHelpers {
         ).nonEmpty
       case None => false
     }
+  def isDeprecated(e: AnnotatedElement) = e.isAnnotationPresent(classOf[java.lang.Deprecated])
 
   def methodSignature(m: Method): String = List(
     m.getName,
@@ -55,20 +58,20 @@ trait JavaConversionHelpers {
         tpe match {
           case null => throw new Error("Property cannot be null")
           case ga: GenericArrayType =>
-            ScalaType("Array", Seq(step(ga.getGenericComponentType, nextLevel)))
+            ScalaType("Array", List(step(ga.getGenericComponentType, nextLevel)))
           case p: ParameterizedType =>
             ScalaType(
               step(p.getRawType, nextLevel).name,
-              p.getActualTypeArguments.map(step(_, nextLevel)).toSeq
+              p.getActualTypeArguments.map(step(_, nextLevel)).toList
             )
           case t: TypeVariable[_] =>
-            ScalaType(t.getName, Nil, bounds = t.getBounds.map(step(_, nextLevel)).toSeq, isVar = true)
+            ScalaType(t.getName, Nil, bounds = t.getBounds.map(step(_, nextLevel)).toList, isVar = true)
           case w: WildcardType =>
-            val bs = w.getUpperBounds.map(step(_, nextLevel)).toSeq.filter(_.name != "Any")
+            val bs = w.getUpperBounds.map(step(_, nextLevel)).toList.filter(_.name != "Any")
             ScalaType("_", Nil, bounds = bs)
           case c: Class[_] => {
             if (c.isArray) {
-              ScalaType("Array", Seq(step(c.getComponentType, nextLevel)))
+              ScalaType("Array", List(step(c.getComponentType, nextLevel)))
             } else if (c.isPrimitive) {
               ScalaType(c.getName match {
                 case "void" => "Unit"
@@ -78,8 +81,8 @@ trait JavaConversionHelpers {
               ScalaType("Any")
             } else {
               ScalaType(
-                c.getName.replace("$", innerClassDelim(c)),
-                c.getTypeParameters.map(step(_, nextLevel)).toSeq
+                name = c.getName.replace("$", innerClassDelim(c)),
+                params = c.getTypeParameters.map(step(_, nextLevel)).toList
               )
             }
           }
@@ -87,7 +90,22 @@ trait JavaConversionHelpers {
             throw new Error("Cannot find type of " + tpe.getClass + " ::" + tpe.toString)
         }
     }
-    step(_tpe, 0)
+
+    def javaTypeName(t: Type) =
+      t.toString.replaceFirst("^[^ ]+ ", "").replace("$", ".")
+
+    val javaName =
+      _tpe match {
+        case c: Class[_] =>
+          if (c.isArray) javaTypeName(c.getComponentType) + "[]"
+          else if (c.isPrimitive) _tpe.toString
+          else c.getCanonicalName
+
+        case _ => // TODO match generic types
+          javaTypeName(_tpe)
+      }
+
+    step(_tpe, 0).copy(javaName = javaName)
   }
 
   def toTypeStr(_tpe: Type, isVarArgs: Boolean, isLast: Boolean): String = {

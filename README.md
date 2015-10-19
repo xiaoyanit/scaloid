@@ -3,15 +3,15 @@
  *
  *
  *
+ * Scaloid: Simpler Android
  *
- * Less painful Android development with Scala
  * http://scaloid.org
  *
  *
  *
  *
  *
- * Copyright 2013 Sung-Ho Lee
+ * Copyright 2013 Sung-Ho Lee and Scaloid contributors
  *
  * Sung-Ho Lee licenses this file to you under the Apache License,
  * version 2.0 (the "License"); you may not use this file except in compliance
@@ -28,9 +28,9 @@
 -->
 <p align="center"><img src="http://o-n2.com/scaloid_logo.png"></p>
 
-# Less painful Android development with Scala
+# Simpler Android
 
-Scaloid is a library that simplifies your Android code. It makes your code easy to understand and maintain by [leveraging Scala language](#faqs-about-scala-on-android).
+Scaloid is a library that simplifies your Android code. It makes your code easy to understand and maintain by [leveraging Scala language](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-faqs-about-scaloid).
 
 For example, the code block shown below:
 
@@ -49,57 +49,66 @@ is reduced to:
 
 ```scala
 SButton("Greet", toast("Hello!"))
-```  
+```
 
 
 ### Benefits
  * **Write elegant Android software**<br/>
-   Scaloid provides a concise and type-safe way of writing Android application.
- * **Simple to use**<br/>
-   Check our [quick start guide](#quick-start)
+   Simplicity is number one principle, keeps programmability and type-safety.
+ * **Easy to use**<br/>
+   Check the [quick start guide](https://github.com/pocorall/scaloid/wiki/Installation#wiki-quick-start)
  * **Compatible with your legacy code**<br/>
-   You can use both Scaloid and plain-old Java Android API. You can gradually improve your legacy code.
- * **Maintained actively**<br/>
-   Scaloid is a [dogfooding](http://en.wikipedia.org/wiki/Eating_your_own_dog_food) software. This is originally created to be used for [my own](https://play.google.com/store/apps/details?id=com.soundcorset.client.android) [Android apps](https://play.google.com/store/apps/details?id=com.tocplus.client.android).
+   You can [use both Scaloid and plain-old Java Android API](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-i-cant-use-scaloid-because-it-does-not-provide-a-functionality-x). You can gradually improve your legacy code.
+ * **Production quality**<br/>
+   Not a toy project. The creator of Scaloid uses it to build [a millionth downloaded app](https://play.google.com/store/apps/details?id=com.soundcorset.client.android).
 
 ### Demos
 
- * [<b>Hello world of Scaloid for maven</b>](https://github.com/pocorall/hello-scaloid-maven)<br/>
-   Fork this to start a new project.
- * [<b>Examples for sbt</b>](https://github.com/placrosse/scaloid-examples)<br/>
-   Fork this for sbt build.
- * [<b>Scaloid port of apidemos app</b>](https://github.com/pocorall/scaloid-apidemos)<br/>
-   Learn how Scaloid can be used in action.
+Fork one of this to start a new project:
+ * [<b>Hello world of Scaloid for sbt</b>](https://github.com/pocorall/hello-scaloid-sbt) (recommended, it builds faster)
+ * [<b>Hello world of Scaloid for maven</b>](https://github.com/pocorall/hello-scaloid-maven)
+ * [<b>Hello world of Scaloid for gradle</b>](https://github.com/pocorall/hello-scaloid-gradle)
 
- * [<b>List of projects using Scaloid</b>](#list-of-projects-using-scaloid)
- * [<b>FAQs</b>](#faqs)
-     * [Why Scala rather than Xtend?](#why-scala-rather-than-xtend)
-     * [Why Scala rather than JRuby?](#why-scala-rather-than-jruby)
-     * [FAQs about Scala on Android](#faqs-about-scala-on-android)
- * [<b>Contributing</b>](#lets-make-it-together)
+Learn how Scaloid can be used in action:
+ * [<b>Scaloid port of apidemos app</b>](https://github.com/pocorall/scaloid-apidemos)
+ * [<b>List of projects using Scaloid</b>](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-list-of-projects-using-scaloid)
+ * [<b>Tutorial by Gaston Hillar</b>](http://www.drdobbs.com/mobile/developing-android-apps-with-scala-and-s/240161584) - [part 1](http://www.drdobbs.com/mobile/developing-android-apps-with-scala-and-s/240161584) and [part 2](http://www.drdobbs.com/mobile/developing-android-apps-with-scala-and-s/240162204)
 
-## Features
 
+## Contents
+
+ * [Core design principle](#core-design-principle)
  * [UI Layout without XML](#ui-layout-without-xml)
    * [Layout context](#layout-context)
    * [Styles for programmers](#styles-for-programmers)
    * [Automatic layout converter](#automatic-layout-converter)
  * [Lifecycle management](#lifecycle-management)
- * [Asynchronous task processing](#asynchronous-task-processing)
- * [Implicit conversions](#implicit-conversions)
-   * [Context as an implicit parameter](#context-as-an-implicit-parameter)
-   * [Activity as an implicit parameter](#activity-as-an-implicit-parameter)
-   * [Shorter listeners](#enriched-implicit-classes)
- * [Traits](#traits)
- * [Smarter logging](#logging)
+ * [Asynchronous task processing](https://github.com/pocorall/scaloid/wiki/Basics#wiki-asynchronous-task-processing)
+ * [Implicit conversions](https://github.com/pocorall/scaloid/wiki/Basics#wiki-implicit-conversions)
+   * [Shorter listeners](https://github.com/pocorall/scaloid/wiki/Basics#wiki-enriched-implicit-classes)
+   * [Database cursor](http://blog.scaloid.org/2014/02/simple-enhancements-on-accessing.html)
+ * [Traits](https://github.com/pocorall/scaloid/wiki/Basics#wiki-traits)
+ * [Smarter logging](https://github.com/pocorall/scaloid/wiki/Basics#wiki-logging)
  * [Improved getters/setters](#scala-getters-and-setters)
  * [Classes](#classes)
    * [Concise dialog builder](#class-alertdialogbuilder)
    * [Beauty ArrayAdapter](#class-sarrayadapter)
    * [Dynamically Preferences](#class-preferences)  [<sub>`Read in blog`</sub>](http://blog.scaloid.org/2013/03/dynamicly-accessing-sharedpreferences.html)
    * [Binding services concisely](#class-localservice)  [<sub>`Read in blog`</sub>](http://blog.scaloid.org/2013/03/introducing-localservice.html)
+   
+## Other links   
+ * [<b>Quick start guide</b>](https://github.com/pocorall/scaloid/wiki/Installation#wiki-quick-start)
+ * [<b>API doc</b>](http://docs.scaloid.org/)
+ * [<b>Blog</b>](http://blog.scaloid.org/)
+ * [<b>Twitter</b>](https://twitter.com/scaloid/)
+ * [<b>FAQs</b>](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-faqs-about-scaloid)
+     * [FAQs about Scala on Android](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-faqs-about-scala-on-android)
+ * [<b>Inside Scaloid</b>](https://github.com/pocorall/scaloid/wiki/Inside-Scaloid)
+ * [<b>We are hiring!</b>](#we-are-hiring)
 
-...and many other things! Check the [official Scaloid blog](http://blog.scaloid.org) for news and announcements.
+## Core design principle
+
+"Being practically simple" is number one principle of Scaloid. Most frequently used things should be written shorter, like [Huffman coding](https://en.wikipedia.org/wiki/Huffman_coding). To do this, I first observed Android programs I wrote, and thought that which part of the code is more fundamental than others. For example, what is the most essential part of buttons? Buttons should have some visible things on it, such as title or image, so the buttons are created like this: `SButton("Hello")`. The second essential part is doing something when it is pressed: `SImageButton(R.drawable.hello, toast("World!"))`. What should be the third one? The answer might not the same for every people, but I think that repetition frequency of press-and-hold action is nice: `SButton("Add", n += 1, 500)` increases `n` for every 500 milliseconds when the user holds the button.
 
 ## UI Layout without XML
 <p align="center"><img src="http://o-n2.com/verboseSimple.png"></p>
@@ -126,7 +135,7 @@ Android SDK leverages XML to build UI layouts. However, XML is considered still 
             android:layout_height="wrap_content" android:id="@+id/signin"
             android:text="Sign in"/>
     <LinearLayout android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         <Button android:text="Help" android:id="@+id/help"
                 android:layout_width="match_parent" android:layout_height="wrap_content"/>
@@ -140,34 +149,34 @@ is reduced to:
 
 ```scala
 new SVerticalLayout {
-  STextView("Sign in").textSize(24.5 sp).<<.marginBottom(25 dip).>>
+  STextView("Sign in").textSize(24.5.sp).<<.marginBottom(25.dip).>>
   STextView("ID")
   SEditText()
   STextView("Password")
   SEditText() inputType TEXT_PASSWORD
   SButton("Sign in")
-  this += new SLinearLayout {
+  new SLinearLayout {
     SButton("Help")
     SButton("Sign up")
-  }
-}.padding(20 dip)
-```    
+  }.wrap.here
+}.padding(20.dip)
+```
 
 The layout description shown above is highly programmable. You can easily wire your logic into the layout:
 
 ```scala
 new SVerticalLayout {
-  STextView("Sign in").textSize(24.5 sp).<<.marginBottom(25 dip).>>
+  STextView("Sign in").textSize(24.5.sp).<<.marginBottom(25.dip).>>
   STextView("ID")
   val userId = SEditText()
   STextView("Password")
   val pass = SEditText() inputType TEXT_PASSWORD
   SButton("Sign in", signin(userId.text, pass.text))
-  this += new SLinearLayout {
+  new SLinearLayout {
     SButton("Help", openUri("http://help.url"))
     SButton("Sign up", openUri("http://signup.uri"))
-  }
-}.padding(20 dip)
+  }.wrap.here
+}.padding(20.dip)
 ```
 
 Because a Scaloid layout description is plain Scala code, it is type-safe.
@@ -191,15 +200,31 @@ onCreate {
 }
 ```
 
-### Further readings about Scaloid layout 
+### Responsive layout
 
-*These are highly recommended articles!*
+Basically, a layout written in Scaloid is just an ordinary Scala code, so you can just freely composite the layout according to the device configuration:
+
+```scala
+import org.scaloid.util.Configuration._
+
+if(long) SButton("This button is shown only for a long screen "
+  + "dimension ("+ width + ", " + height + ")")
+if(landscape) new SLinearLayout {
+  SButton("Buttons for")
+  SButton("landscape layout")
+  if(dpi <= HDPI) SButton("You have a high resolution display!")
+}.here
+```
+
+Please refer to this blog post for more detail:
+ - [Syntactic sugar for multiple device configuration](http://blog.scaloid.org/2013/08/syntactic-sugar-for-multiple-device.html)
+
+### Further readings about Scaloid layout 
 
  - [Accessing widgets in view class](http://blog.scaloid.org/2013/04/accessing-widgets-in-view-classes.html)
  - [Layout context](#layout-context)
  - [In-depth tutorial on styles](http://blog.scaloid.org/2013/01/a-css-like-styling-on-android.html)
  - [Styles for programmers](#styles-for-programmers)
-
 
 ## Lifecycle management
 
@@ -249,7 +274,22 @@ broadcastReceiver(ConnectivityManager.CONNECTIVITY_ACTION) { (context, intent) =
 
 Then, the receiver is registered onStart, and unregistered onStop.
 
-**Further reading:** Refer to [a blog post](http://blog.scaloid.org/2013/02/better-resource-releasing-in-android.html) for more details.
+#### onDestroy can be called in many times!
+
+You can declare `onDestroy` behaviors in many places. This simplifies resource management significantly. Suppose you want to open a stream from a file: 
+
+```scala
+def openFileStream(file: File): InputStream = {
+  val stream = new FileInputStream(file)
+  onDestroy(stream.close()) // automatically closed when the Activity is destroyed!!
+  stream
+}
+```
+
+`onDestroy` is a method that adds a function into the job list triggered when the activity is destroyed. So, we just get a stream from `openFileStream()` and forget about releasing it.
+Other lifecycle states (`onCreate`, `onResume`, `onStop` and so on) can be treated in the same way.
+
+**Further reading:** Refer to [this blog post](http://blog.scaloid.org/2013/02/better-resource-releasing-in-android.html) for more details.
  
  
 ## Asynchronous task processing
@@ -266,7 +306,7 @@ activity.runOnUiThread {
     }
   }
 }
-```    
+```
 
 In Scaloid, use it like this:
 
@@ -286,31 +326,33 @@ new AsyncTask[String, Void, String] {
     alert("Done!", result)
   }
 }.execute("param")
-```    
+```
 
-Using [`scala.concurrent.future`](http://docs.scala-lang.org/sips/pending/futures-promises.html), the asynchronous job shown above can be rewritten like this:
+Using [`scala.concurrent.Future`](http://docs.scala-lang.org/sips/completed/futures-promises.html), the asynchronous job shown above can be rewritten like this:
 
 ```scala
-future {
+Future {
   val result = doAJobTakeSomeTime(params)
   runOnUiThread(alert("Done!", result))
 }
-```  
+```
 
 When you don't want to build sophisticate UI interactions, but just want to display something by calling a single Scaloid method (e.g. `alert`, `toast`, and `spinnerDialog`), Scaloid handles `runOnUiThread` for you. Therefore, the code block shown above is reduced to:
 
 ```scala
-future {
+Future {
   alert("Done!", doAJobTakeSomeTime(params))
 }
-```  
+```
 
 It is a great win as it exposes your idea clearly.
 
 Just like we thrown away `AsyncTask`, we can also eliminate all other Java helpers for asynchronous job, such as `AsyncQueryHandler` and `AsyncTaskLoader`. Compare with the [original Java code](http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android-apps/4.1.1_r1/com/example/android/apis/view/ExpandableList2.java?av=h)
 and a [Scala port](https://github.com/pocorall/scaloid-apidemos/blob/master/src/main/java/com/example/android/apis/view/ExpandableList2.scala) of ApiDemos example app.
 
-Using `future` is just an example of asynchronous task processing in Scaloid. You can freely use any modern task management utilities.
+Using `Future` is just an example of asynchronous task processing in Scaloid. You can freely use any modern task management utilities.
+
+**Further reading:** Refer to [this blog post](http://blog.scaloid.org/2013/11/using-scalaconcurrentfuture-in-android.html) for an important consideration when using `Future` in Android.
 
 
 ## Implicit conversions
@@ -320,21 +362,43 @@ Scaloid employs several implicit conversions. Some of the available implicit con
 
 ```scala
 String => Uri
-```    
+```
 
 The functions such as [play ringtones](#play-ringtones) `play()` or [open URIs](#open-uris) `openUri()` takes an instance of `Uri` as a parameter. However, we frequently have URIs as a `String`. Scaloid implicitly converts `String` into `Uri`. Therefore, you can freely use `String` when you play a ringtone:
 
 ```scala
 play("content://media/internal/audio/media/50")
-```    
+```
 
 , open a URI:
 
 ```scala
 openUri("http://scaloid.org")
-```    
+```
 
 , or wherever you want.
+
+Alternatively, you can specify the conversion as:
+
+```scala
+val uri:Uri = "http://scaloid.org".toUri
+```
+
+##### Unit conversion
+
+Units `dip` and `sp` can be converted into the pixel unit.
+
+```scala
+val inPixel:Int = 32.dip
+val inPixel2:Int = 22.sp
+```
+
+Reversely, pixel unit can also be converted into `dip` and `sp` unit.
+
+```scala
+val inDip:Double = 35.px2dip
+val inSp:Double = 27.px2sp
+```
 
 ##### Resource IDs
 
@@ -355,69 +419,18 @@ warn("Will display the content of the resource: " + R.string.my_message.r2String
 
 Currently, `r2Text`, `r2TextArray`, `r2String`, `r2StringArray`, `r2Drawable` and `r2Movie` is provided.
 
-**Why implicit conversion of Resource ID is cool?**
 
-Android API provides two versions of methods for string resources; One for `CharSequence`, the other for `Int` as a resource ID. If you write a function that handles Android resource, you also have to expose methods for every combination of two versions of resources:
-
-```scala
-def alert(titleId:Int, textId:Int)(implicit context:Context) = {
-  alert(context.getText(titleId), context.getText(textId))
-}
-
-def alert(titleId:Int, text:CharSequence)(implicit context:Context) = {
-  alert(context.getText(titleId), text)
-}
-
-def alert(title:CharSequence, textId:Int)(implicit context:Context) = {
-  alert(title, context.getText(textId))
-}
-
-def alert(title:CharSequence, text:CharSequence) = ...
-```    
-
-This is not a smart way. Write just one method that defines the logic:
-
-```scala
-def alert(title:CharSequence, text:CharSequence) = ...
-```    
-
-Then Scaloid implicit conversions will take care about these resource type conversions.
+**Further reading:**
+ * [Why implicit conversion of Resource ID is cool?](https://github.com/pocorall/scaloid/wiki/Basics#wiki-why-implicit-conversion-of-resource-id-is-cool)
 
 
-##### Unit conversion
-
-Units `dip` and `sp` can be converted into the pixel unit.
-
-```scala
-val inPixel:Int = (32 dip)
-val inPixel2:Int = (22 sp)
-```  
-
-
-##### Runnable
-
-```scala
-(_ => Any) => Runnable
-```  
-
-`Runnable` also covered with [rich](#enriched-implicit-classes) and [prefixed classes](#prefixed-classes).
-
-There are more implicit conversions available. Check the source code as needed.
-
-##### IntentFilter
-
-String can be converted into `IntentFilter`:
-
-```scala
-implicit string2IntentFilter(str: String) = new IntentFilter(str)
-```
 
 ## Context as an implicit parameter
 Many methods in the Android API require an instance of a class `Context`. Providing this for every method call results in clumsy code. We employ an implicit parameter to eliminate this. Just declare an implicit value that represents current context:
 
 ```scala
 implicit val ctx = ...
-```    
+```
 
 or just extend trait `SContext`, which defines it for you. Then the code that required `Context` becomes much simpler, for example:
 
@@ -426,7 +439,7 @@ or just extend trait `SContext`, which defines it for you. Then the code that re
 
 ```scala
 new Intent(context, classOf[MyActivity])
-```    
+```
 
 is reduced to:
 
@@ -434,13 +447,40 @@ is reduced to:
 SIntent[MyActivity]
 ```
 
-##### Toast
+When a method takes an `Intent` as a first parameter in which we want to pass the newly created intent object, the parameter can be omitted. For example:
 
 ```scala
-Toast.makeText(context, "hi, there!", Toast.LENGTH_SHORT).show()
+startService(new Intent(context, classOf[MyService]))
+stopService(new Intent(context, classOf[MyService]))
 ```
 
 is reduced to:
+
+```scala
+startService[MyService]
+stopService[MyService]
+```
+
+or
+
+```scala
+val intent = // initialize the intent and put some attributes on it
+intent.start[MyActivity]
+```
+
+An intent that has a long list of extra attributes:
+
+```scala
+new Intent().putExtra("valueA", valueA).putExtra("valueB", valueB).putExtra("valueC", valueC)
+```
+
+is reduced to:
+
+```scala
+new Intent().put(valueA, valueB, valueC)
+```
+
+##### Toast
 
 ```scala
 toast("hi, there!")
@@ -489,38 +529,6 @@ pendingActivity[MyActivity]
 pendingService[MyService]
 ```
 
-##### DefaultSharedPreferences
-
-```scala
-PreferenceManager.getDefaultSharedPreferences(context)
-```
-
-is reduced to:
-
-```scala
-defaultSharedPreferences
-```
-
-##### Play ringtones
-
-Just play the default notification ringtone:
-
-```scala
-play()
-```
-
-specify ringtone resources as a `String`:
-
-```scala
-play("content://media/internal/audio/media/50")
-```
-
-or specify a resource `Uri`:
-
-```scala
-play(alarmSound)
-```
-
 ##### Open URIs
 
 This opens a web browser (or another view assigned to the http protocol).
@@ -537,13 +545,13 @@ Getting system service objects become much simpler. The following legacy code:
 ```scala
 val vibrator = context.getSystemService(Context.VIBRATOR_SERVICE).asInstanceOf[Vibrator]
 vibrator.vibrate(500)
-```    
+```
 
 is reduced to:
 
 ```scala
 vibrator.vibrate(500)
-```    
+```
 
 Under the hood, Scaloid defines a function `vibrator` like this:
 
@@ -569,13 +577,13 @@ find[Button](R.id.search).setOnClickListener(new View.OnClickListener {
     openUri("http://scaloid.org")
   }
 })
-```  
+```
 
 Scaloid provides a shortcut that dramatically reduces the length of the code:
 
 ```scala
 find[Button](R.id.search).onClick(openUri("http://scaloid.org"))
-```    
+```
 
 All other listener-appending methods such as `.onKey()`, `.onLongClick()`, and `.onTouch()` are defined.
 
@@ -599,7 +607,7 @@ Methods `beforeTextChanged()`, `onTextChanged()`, and `afterTextChanged()` are d
 
 ```scala
 inputField.beforeTextChanged(saveTextStatus())
-```    
+```
 
 is equivalent to:
 
@@ -613,13 +621,13 @@ inputField.addTextChangedListener(new TextWatcher {
 
   def afterTextChanged(p1: Editable) {}
 })
-```    
+```
 
 Also, we override `beforeTextChanged()` with full parameters defined in the original listener:
 
 ```scala
 inputField.beforeTextChanged((s:CharSequence, _:Int, _:Int) => saveText(s))
-```    
+```
 
 Other listeners in Android API can also be accessed in this way.
 
@@ -635,7 +643,7 @@ LinearLayout.LayoutParams params = new LinearLayout.LayoutParams();
 params.weight = 1.0f;  // sets some value
 button.setLayoutParams(params);
 layout.addView(button);
-```  
+```
 
 Because the button is appended into the `LinearLayout`, the layout parameter must be `LinearLayout.LayoutParams`, otherwise a ___runtime error___ might be occurred. Meanwhile, Scaloid eliminate this burden, while still preserving rigorous typing of `LayoutParams`. The code shown below is equivalent to the previous Java code:
 
@@ -643,7 +651,7 @@ Because the button is appended into the `LinearLayout`, the layout parameter mus
 val layout = new SLinearLayout {
   SButton("Click").<<.Weight(1.0f).>>
 }
-```    
+```
 
 In the anonymous constructor of 'SLinearLayout', Scaloid provides an implicit function called "layout context". This affects a return type of the method `<<` defined in the class `SButton`. 
 If we use `SFrameLayout` as a layout context, the method `<<` returns `FrameLayout.LayoutParams`, which does not have `Weight` method. Therefore, the code below results a ___syntax error___.
@@ -652,46 +660,43 @@ If we use `SFrameLayout` as a layout context, the method `<<` returns `FrameLayo
 val layout = new SFrameLayout {
   SButton("Click").<<.Weight(1.0f).>>   // Syntax error on Weight()
 }
-```    
+```
 
 Compared with XML layout description, Scaloid layout is simple and type-safe.
 
 The method `<<` is overloaded with parameters `<<(width:Int, height:Int)` which assigns the size of the view component. For example:
 
 ```scala
-SButton("Click").<<(40 dip, WRAP_CONTENT)
-```    
+SButton("Click").<<(40.dip, WRAP_CONTENT)
+```
 
 #### Operator `new` and method `apply`
 
 Usually, `View` components are referenced multiple times in an `Activity`. For example:
 
 ```scala
-var button: SButton = null
-override def onCreate(savedInstanceState: Bundle) {
-  // ...
-  new SLinearLayout {
-    button = new SButton() text "Click"
-    this += button
+lazy val button = new SButton() text "Click"
+onCreate {
+  contentView = new SLinearLayout {
+    button.here
   }
-  // ...
 }
 // ... uses the button somewhere in other methods (e.g. changing text or adding listeners)
-```  
+```
 
-[Prefixed classes](#prefixed-classes) in Scaloid (e.g. `SButton`) have a companion object that implements `apply` methods that create a new component. These methods also append the component to the layout context that enclose the component. 
+[Prefixed classes](https://github.com/pocorall/scaloid/wiki/Basics#wiki-prefixed-classes) in Scaloid (e.g. `SButton`) have a companion object that implements `apply` methods that create a new component. These methods also append the component to the layout context that enclose the component. 
 Therefore, the code block from the above example:
 
 ```scala
 button = new SButton() text "Click"
-this += button
-```    
+button.here
+```
 
 is equivalent to:
 
 ```scala
 button = SButton("Click")
-```    
+```
 
 Because the `apply` methods access to the layout context, it cannot be called outside of the layout context. 
 In this case, use the `new` operator instead.
@@ -702,13 +707,13 @@ As we noted, the method `<<` returns an object which is a type of `ViewGroup.Lay
 
 ```scala
 val params = SButton("Click").<<   // type LayoutParams
-```    
+```
 
 This class provides some setters for chaining:
 
 ```scala
 val params = SButton("Click").<<.marginBottom(100).marginLeft(10)   // type LayoutParams
-```    
+```
 
 if we want use the `SButton` object again, Scaloid provides `>>` method returning back to the object:
 
@@ -722,13 +727,13 @@ When the layout context is nested, inner-most layout's context is applied:
 
 ```scala
 val layout = new SFrameLayout {
-  this += new SLinearLayout {
+  new SLinearLayout {
     SButton("Click").<<.Weight(1.0f).>>   // in context of SLinearLayout
-  }
+  }.here
 }
 ```
 
-#### Methods `fill` and `wrap`
+#### Methods `fill`, `wrap`, `wf` and `fw`
 
 When we get a `LayoutParams` from `<<`, the default values of `width` and `height` properties are `width = FILL_PARENT` and `height = WRAP_CONTENT`. You can override this when you need it:
 
@@ -740,19 +745,30 @@ This is a very frequently used idiom. Therefore we provide further shorthand:
 
 ```scala
 SButton("Click").<<.fill
-```    
+```
 
 If you want the `View` element to be wrapped,
 
 ```scala
 SButton("Click").<<(WRAP_CONTENT, WRAP_CONTENT)
-```    
+```
 
 This is also shortened as:
 
 ```scala
 SButton("Click").<<.wrap
-```    
+```
+
+Similarly, `<<(WRAP_CONTENT, FILL_PARENT)` and `<<(FILL_PARENT, WRAP_CONTENT)` can also be shortend as `<<.wf` and `<<.fw` respectively.
+
+Because there are so many occurences `<<.wrap.>>` pattern in actual Android code, it is allowed to remove `.<<` and `.>>` in this case:
+
+```scala
+SButton("Click").wrap    // returns SButton type
+```
+
+This pattern also usable for `.fill`, `.fw` and `.wf` methods.
+
 
 ## Styles for programmers
 
@@ -768,7 +784,7 @@ For example:
 new SRelativeLayout {
   STextView("hello").<<.centerHorizontal.alignParentBottom.>>
 }
-```    
+```
 
 Scaloid omits unnecessary `="true"` for the attribute `centerHorizontal`. Equivalent XML layout description for `TextView` is:
 
@@ -780,18 +796,18 @@ Scaloid omits unnecessary `="true"` for the attribute `centerHorizontal`. Equiva
     android:layout_centerHorizontal="true"
     android:layout_alignParentBottom="true"
     android:text="hello"/>
-```    
+```
 
 For layout methods named with four directions (e.g. `...Top`, `...Right`, `...Bottom` and `...Left`), Scaloid provides additional methods that specifies all properties at once. For example, Because Android XML layout defines `margin...` properties(`marginTop(v:Int)`, `marginRight(v:Int)`, `marginBottom(v:Int)` and `marginLeft(v:Int)`), Scaloid provides additional `margin(top:Int, right:Int, bottom:Int, left:Int)` and `margin(amount:Int)` methods that can be used as:
 
 ```scala
-STextView("hello").<<.margin(5 dip, 10 dip, 5 dip, 10 dip)
-```    
+STextView("hello").<<.margin(5.dip, 10.dip, 5.dip, 10.dip)
+```
 
 or
 
 ```scala
-STextView("hello").<<.margin(10 sp)  // assigns the same value for all directions
+STextView("hello").<<.margin(10.sp)  // assigns the same value for all directions
 ```
 
 
@@ -804,26 +820,26 @@ To apply styles in Scaloid, you do not need to learn any syntax or API library, 
 Suppose the following code that repeats some properties:
 
 ```scala
-SButton("first").textSize(20 dip).<<.margin(5 dip).>>
-SButton("prev").textSize(20 dip).<<.margin(5 dip).>>
-SButton("next").textSize(20 dip).<<.margin(5 dip).>>
-SButton("last").textSize(20 dip).<<.margin(5 dip).>>
-```  
+SButton("first").textSize(20.dip).<<.margin(5.dip).>>
+SButton("prev").textSize(20.dip).<<.margin(5.dip).>>
+SButton("next").textSize(20.dip).<<.margin(5.dip).>>
+SButton("last").textSize(20.dip).<<.margin(5.dip).>>
+```
 
 Then we can define a function that applies these properties:
 
 ```scala
-def myStyle = (_: SButton).textSize(20 dip).<<.margin(5 dip).>>
+def myStyle = (_: SButton).textSize(20.dip).<<.margin(5.dip).>>
 myStyle(SButton("first"))
 myStyle(SButton("prev"))
 myStyle(SButton("next"))
 myStyle(SButton("last"))
-```  
+```
 
 Still not satisfying? Here we have a shorter one:
 
 ```scala
-def myStyle = (_: SButton).textSize(20 dip).<<.margin(5 dip).>>
+def myStyle = (_: SButton).textSize(20.dip).<<.margin(5.dip).>>
 List("first", "prev", "next", "last").foreach(title => myStyle(SButton(title)))
 ```
 
@@ -835,30 +851,30 @@ Then the example in the previous subsection becomes:
 
 ```scala
 style {
-  case b: SButton => b.textSize(20 dip).<<.margin(5 dip).>>
+  case b: SButton => b.textSize(20.dip).<<.margin(5.dip).>>
 }
 
 SButton("first")
 SButton("prev")
 SButton("next")
 SButton("last")
-``` 
+```
 
 Note that individually applying `myStyle` is reduced. Let us see another example:
 
 ```scala
 style {
   case b: SButton => b.textColor(Color.RED).onClick(toast("Bang!"))
-  case t: STextView => t.textSize(10 dip)
+  case t: STextView => t.textSize(10.dip)
   case v => v.backgroundColor(Color.YELLOW)
 }
 
-STextView("I am 10 dip tall")
+STextView("I am 10.dip tall")
 STextView("Me too")
-STextView("I am taller than you").textSize(15 dip) // overriding
+STextView("I am taller than you").textSize(15.dip) // overriding
 SEditText("Yellow input field")
 SButton("Red alert!")
-``` 
+```
   
 Similar to CSS, you can assign different styles for each classes using Scala pattern matching. 
 Unlike Android XML styles or even CSS, Scaloid can assign some actions to the component (see `onclick(toast(...))`), or can do anything that you imagine. 
@@ -887,53 +903,21 @@ class MyService extends SService with UnregisterReceiver {
 }
 ```
 
-### Trait `SContext`
-
-Trait `SContext` includes several shortcuts for frequently used android idioms, and inherits `TagUtil`.
-
-##### Starting and stopping service
-
-```scala
-startService(new Intent(context, classOf[MyService]))
-stopService(new Intent(context, classOf[MyService]))
-```    
-
-is reduced to:
-
-```scala
-startService[MyService]
-stopService[MyService]
-```    
-
-
-##### Starting activity
-
-```scala
-startActivity(new Intent(context, classOf[MyActivity]))
-```    
-
-is reduced to:
-
-```scala
-startActivity[MyActivity]
-```
-
-
 ### Trait `SActivity`
 
 Instead of
 
 ```scala
 findViewById(R.id.login).asInstanceOf[Button]
-```    
+```
 
 use a shorthand:
 
 ```scala
 find[Button](R.id.login)
-```    
+```
 
-Although we provide this shorthand, Scaloid recommends [programmatically laying out UI, not with XML](#ui-layout-without-xml).
+Although we provide this shorthand, Scaloid recommends [programmatically laying out UI, not with XML](https://github.com/pocorall/scaloid/wiki/UI-Layout-without-XML).
 
 ## Activity as an implicit parameter
 Similar to the [implicit context](#context-as-an-implicit-parameter), an `Activity` typed implicit parameter is also required for some methods. Therefore, you have to define an activity as an implicit value:
@@ -965,7 +949,7 @@ One of the good use case of `uniqueId` is `SRelativeLayout`. Some of the methods
 
 ```scala
 new SRelativeLayout {
-  val btn = SButton("Hi")
+  val btn = SButton(R.string.hi)
   SButton("There").<<.below(btn)
 }
 ```
@@ -986,14 +970,14 @@ A new unique ID is assigned to the `anchor` if it is not assigned already, and p
 Unlike other logging frameworks, Android Logging API requires a `String` tag for every log call. We eliminate this by introducing an implicit parameter. Define an implicit value type of `LoggerTag` as shown:
 
 ```scala
-implicit val tag = LoggerTag("MyAppTag")
-```    
+implicit val loggerTag = LoggerTag("MyAppTag")
+```
 
 or, extend trait `TagUtil` or `SContext` which defines the tag by default. Then you can simply log like this:
 
 ```scala
 warn("Something happened!")
-```  
+```
 
 Other functions for every log level (`verbose()`, `debug()`, `info()`, `warn()`, `error()` and `wtf()`) are available.
 
@@ -1006,7 +990,7 @@ A `String` parameter passed with `info()` is a by-name parameter, so it is evalu
 ```scala
 val tag = "MyAppTag"
 if(Log.isLoggable(tag, Log.INFO)) Log.i(tag, "hello " + world)
-```  
+```
 
 
 ## Scala getters and setters
@@ -1025,7 +1009,7 @@ new TextView(context) {
   setText("Hello")
   setTextSize(15)
 }
-```  
+```
 
 that of Scala style clearly reveals the nature of the operations as shown below:
 
@@ -1034,13 +1018,13 @@ new STextView {
   text = "Hello"
   textSize = 15
 }
-```  
+```
 
 Or, you can also chain the setters:
 
 ```scala
 new STextView text "Hello" textSize 15
-```    
+```
 
 which is a syntactic sugar for:
 
@@ -1056,94 +1040,11 @@ Note: Using `.apply(String)` method on object `STextView`, you can further reduc
 STextView("Hello") textSize 15
 ```
 
+**Further readings:**
 
-### Return value of setters
-
-Unlike most setters in the Android API, our setters return the object itself. This feature can be used as a syntactic sugar when setters need to be chained or a function returning some object. For example, a snippet of [Java code](http://grepcode.com/file/repository.grepcode.com/java/ext/com.google.android/android-apps/4.1.1_r1/com/example/android/apis/view/ExpandableList1.java?av=h) from ApiDemos that is shown below:
-
-```java
-public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-  TextView textView = getGenericView();
-  textView.setText(getGroup(groupPosition).toString());
-  return textView;
-}
-```    
-
-is reduced to:
-
-```scala
-def getGroupView(groupPosition: Int, isExpanded: Boolean, convertView: View, parent: ViewGroup): View =
-  getGenericView.text = getGroup(groupPosition).toString
-```      
-
-**Design considerations on returning values:** In C or Java, the assignment operator `=` returns a right hand side object. However, chaining assignment operator is very rarely used in these languages. Assigning the same value to multiple variables might means that your code is badly designed (except some context such as involving intensive mathematical computations). However, in Scala DSLs, setters return a left hand side object, and chaining setters are more frequent. For example:
-
-```scala
-getGenericView text "hello" maxHeight 8
-```
-
-### Prefixed classes
-
-If you want to use scala style getters/setters, implicit conversions do the magic on native Android objects:
-
-```scala
-val v: TextView = ...
-v.text = "Hello"    // Valid code. Implicit conversion handles this.
-```
-
-However, if you use it in constructors, the compiler will not find the correct implicit conversion:
-
-```scala
-def getInstance = new TextView(context) {
-  text = "Hello"    // Compilation Error.
-}
-```  
-
-Therefore, we extended Android classes with the same name prefixed with the 'S' character:
-
-```scala
-def getInstance = new STextView {
-  text = "Hello"    // OK.
-}
-```
-
-These classes explicitly provide the extra methods that was provided implicitly.
-
-Aditionally, prefixed classes support [implicit context value](#context-as-an-implicit-parameter) and additional syntactic sugar. For example, many classes have `.apply(...)` methods for creating a new instance:
-
-```scala
-STextView("Hello")
-SButton("title", onClickBehavior())
-SIntent[MyActivity]
-```
-
-**Design considerations on making prefixed classes:** In modern programming language, using packages (or namespaces) are preferred than prefixing. However, when we use both classes from Android API and Scaloid, using a package name is more verbose than prefixing the class name itself (compare with `common.Button` and `SButton`) and can be confused when you use both classes at the same code. We choose pragmatism rather than discipline.
-
-### Sweet-little sugar
-
-If the setter ends with `...Enabled`, Scaloid adds functions named `enable...` and `disable...`. For example:
-
-```scala
-new SLinearLayout().disableVerticalScrollBar
-```
-
-is equivalent to:
-
-```scala
-new SLinearLayout().verticalScrollBarEnabled(false)
-```
-
-Because setting the property `orientation = VERTICAL` for `SLinearLayout` is frequently used, we provide a shorthand:
-
-```scala
-new SVerticalLayout()
-```
-
-that is equivalent to:
-
-```scala
-new SLinearLayout().orientation(LinearLayout.VERTICAL)
-```
+ * [Return value of setters](https://github.com/pocorall/scaloid/wiki/Basics#wiki-return-value-of-setters)
+ * [Prefixed classes](https://github.com/pocorall/scaloid/wiki/Basics#wiki-prefixed-classes)
+ * [Sweet-little sugar](https://github.com/pocorall/scaloid/wiki/Basics#wiki-sweet-little-sugar)
 
 
 ## Classes
@@ -1169,7 +1070,7 @@ Also you can build a more complex dialog:
 ```scala
 new AlertDialogBuilder("Exit the app", "Do you really want to exit?") {
   positiveButton("Exit", finishTheApplication())
-  negativeButton("Cancel")
+  negativeButton(android.R.string.cancel)
 }.show()
 ```
 
@@ -1184,14 +1085,14 @@ new AlertDialog.Builder(context)
       finishTheApplication()
     }
   })
-  .setNegativeButton("Cancel", new DialogInterface.OnClickListener {
+  .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener {
     def onClick(dialog: DialogInterface, which: Int) {
       dialog.cancel()
     }
   }).show()
 ```
 
-When you call `show()` or `alert` from non-UI thread, you [don't have to mind about threading](#asynchronous-task-processing).
+When you call `show()` or `alert` from non-UI thread, you [don't have to mind about threading](https://github.com/pocorall/scaloid/wiki/Basics#wiki-asynchronous-task-processing).
 
 ### Class `SArrayAdapter`
 
@@ -1205,7 +1106,7 @@ Then the plain-old Android code is consisted of a chunk of XML and its wiring:
     android:id="@+id/spinner_textview"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-	android:textSize="25 dip" />
+	android:textSize="25.dip" />
 ```
 ```scala
 val adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, Array("One", "Two", "Three"))
@@ -1215,7 +1116,7 @@ adapter.setDropDownViewResource(R.layout.spinner_dropdown)
 In Scaloid, a directly equivalent code is:
 
 ```scala
-SArrayAdapter("One", "Two", "Three").dropDownStyle(_.textSize(25 dip))
+SArrayAdapter("One", "Two", "Three").dropDownStyle(_.textSize(25.dip))
 ```
 
 If you want to let the text color in the spinner be blue, use the `style` method:
@@ -1242,33 +1143,26 @@ class Activity extends SActivity {
   val random = new LocalServiceConnection[MyService]
  
   def onButtonClick(v:View) {
-    if(random.connected) toast("number: " + random.service.getRandomNumber())
+    random( s => toast("number: " + s.getRandomNumber()))
   }
 }
 ```
 
-**Further reading:** Refer to [a blog post](http://blog.scaloid.org/2013/03/introducing-localservice.html) to see why this is awesome in compared with the existing method.
+**Further reading:** Refer to [this blog post](http://blog.scaloid.org/2013/03/introducing-localservice.html) to see why this is awesome in compared with the existing method.
 
 ### Class `Preferences`
 
-Instead of accesing SharedPreference directly:
+SharedPreference can be accessed in this way:
 
 ```scala
-val ec = pref.getInt("executionCount", 0)
-val editor = pref.edit()
-editor.putInt("executionCount", ec + 1)
-editor.commit()
-```
-
-You can rewrite it as shown below:
-
-```scala
-val ec = pref.executionCount(0)
-pref.executionCount = ec + 1
+val executionCount = preferenceVar(0) // default value 0
+val ec = executionCount() // read
+executionCount() = ec + 1 // write
+executionCount.remove() // remove
 ```
 
 **Further reading:**
- - [In-depth look at Scaloid Preferences](http://blog.scaloid.org/2013/03/dynamicly-accessing-sharedpreferences.html)
+ - [Type-safe SharedPreference](http://blog.scaloid.org/2015/07/type-safe-sharedpreference.html)
  - [A simple example: Prompt user to rate your app](http://blog.scaloid.org/2013/03/prompt-user-to-rate-your-android-app.html)
 
 ## Extending View class
@@ -1284,174 +1178,22 @@ class MyView(implicit ctx: Context) extends View(ctx) with TraitView[MyView] {
 }
 ```
 
-## Static fields on protected interfaces
-
-Android API has some protected interfaces which has static fields, and inherited it in public classes. For example `android.provider.ContactsContract.Contacts` inherits a protected interface `android.provider.ContactsContract.ContactsColumns`, which defines a static field `ContactsColumns.DISPLAY_NAME`. In Java code, you can access to it with `Contacts.DISPLAY_NAME`. However, Scala does not support accessing in this way (please refer [this](https://issues.scala-lang.org/browse/SI-1806) and [this](http://www.scala-lang.org/faq/4)). It is bad news for an Android-Scala programmer. So we provide a workaround implementation for this problem. Declare `import org.scaloid.Workarounds._`. Then you can use the interfaces publicly which is originally defined as protected.
-
-## Quick start
-
-### Starting a new project
-
-**For maven:**
-
-Fork [Hello world of Scaloid project](https://github.com/pocorall/hello-scaloid-maven).
-
-**For sbt:**
-
-Fork [Scaloid examples for sbt](https://github.com/placrosse/scaloid-examples)
-
-### Add Scaloid into your existing project
-
-Before start using Scaloid, *check your project is properly configured with Scala language*.
-
- 1. [Import Scaloid to your project](#import-it-to-your-project)
- 1. Declare `import org.scaloid.common._` in your code.
- 1. Modify the signature of your classes
-  * If your class inherits `Activity`, change it to `SActivity`
-  * If your class inherits `Service`, change it to `SService`
-  * If your class (indirectly) inherits `Context`, add `trait SContext with LoggerTag`
-  * Otherwise, setting an implicit value is required <br/>
-    `implicit val ctx: Context = ...`
-
-Then, you are ready to use Scaloid.
-
-If you want to see how Scaloid can be used in action, check a [Scala port of apidemos app](https://github.com/pocorall/scaloid-apidemos).
-
-## Import Scaloid to your project
-
-Scaloid is released to the central maven repository.
-
-For maven:
-
-```xml
-<dependency>
-    <groupId>org.scaloid</groupId>
-    <artifactId>scaloid</artifactId>
-    <version>1.1_8_2.10</version>
-</dependency>
-```
-
-For sbt:
-
-```scala
-libraryDependencies += "org.scaloid" % "scaloid" % "1.1_8_2.10"
-```
-
-##### Version number
-Version number of Scaloid is consisted of three parts, separated by `_` characters. The first part is the version of Scaloid, the second is the level of Android API, and the last one is the version of Scala.
-
-Please note that Android API provides backward compatibility. Therefore you can use a Scaloid artifact targeted to API level 8 for the Android application using the level 8 or *above*. In other side, Scala does not provide binary compatibility. The Scaloid artifact uploaded to the central repo is compiled with Scala 2.10. If you use other Scala versions, build the artifact as shown in the following subsection.
-
-
-### Build the source
-
-1. Clone the git repository
-1. If needed, change version of Android API or Scala in pom.xml
-1. Issue `mvn package`
-
- * Scaloid can be built with Android API level 8 or higher and Scala version 2.10.0 or higher.
-
-
-## FAQs
-
-### Why Scala rather than Xtend?
-
-Xtend natively supports 1) converting Java bean style getter/setters into the assignment style 2) automatically shorten the clutters when calling one-method callback interface by converting it into closure-like style. Because these are language features, Xtend users can enjoy these features without any wrapper library. We hope that Scala also adopt these benefits soon.
-
-However, We think that Scala is a better alternative for Android platform, because Scala is mature than Xtend and has these advanced features:
-
-* **Implicit conversion** <br/>
-  Check [implicit conversions](#implicit-conversions) section to see how Scaloid leverage it.
-
-* **Implicit parameter** <br/>
-  Hiding some common values (e.g. [context object](#context-as-an-implicit-parameter), [tag for logging](#logging), and [layout context](#layout-context)) from the parameter list is possible by the Scala's implicit parameters.
-
-* **Advanced type system** <br/>
-  Scaloid [layout parameter](#layout-context) is simple, intuitive, and type-safe.
-
-* **Traits** <br/>
-  Many useful features such as [automatic unregistering receivers](#trait-unregisterreceiverservice) are implemented as traits which permits multiple inheritance.
-
-
-### Why Scala rather than JRuby?
-
-* **Type-safety**
-
-* **Runtime performance** (and your precious battery)<br/>
-  See a [benchmark](http://shootout.alioth.debian.org/)
-
-### FAQs about Scala on Android
-
-Because programming in Scala on Android is not a widely known practice yet, many people asks me basic questions about it. Here are some frequently asked questions:
-
-##### How big is the compiled apk?
-For Scala + Android projects, using [proguard](http://proguard.sourceforge.net/) is mandatory. After the library is reduced by proguard, overhead caused by the Scala standard library is about several hundred kilobytes, although it depends on how much you used the library in your code.
-
-##### How much slow the application?
-According to a [benchmark](http://shootout.alioth.debian.org/), runtime performance of Scala is a little worse than that of Java. However, because most of the code using Scaloid is writing UI and core logic, these performance difference is nearly not noticeable. Still, the display will consume most of the battery life, not Scala.
-
-##### How much slow the compilation?
-Compiling Scala source code and applying proguard takes some time. However, if you have a machine with a multi-core CPU and SSD, it would be a matter of few seconds.
-
-##### Is it hard to setup a Scala + Android project?
-It's not hard. There is an [maven project template](https://github.com/pocorall/hello-scaloid-maven) or [sbt project template](https://github.com/placrosse/scaloid-examples).
-
-
 ## Let's make it together!
 
-This project is in its early stages, and I will grow it constantly. If you have any idea to improve Scaloid, feel free to open issues or post patches.
+Scaloid is an Apache licensed project. 
+If you have any idea to improve Scaloid, feel free to open issues or post patches.
+If you want look into inside of Scaloid, this document would be helpful:
 
-Check the [official Scaloid blog](http://blog.scaloid.org) for news and announcements.
+ * [Inside Scaloid](https://github.com/pocorall/scaloid/wiki/Inside-Scaloid)
 
-### Pull Requests
+ 
+### [List of projects using Scaloid](https://github.com/pocorall/scaloid/wiki/Appendix#wiki-list-of-projects-using-scaloid)
 
-* Create topic branches. Don't ask us to pull from your master branch.
-
-* One pull request per feature. If you want to do more than one thing, send multiple pull requests.
-
-* Document any change in behaviour. Make sure the README and any other relevant documentation are kept up-to-date.
-
-* Send coherent history. Make sure each individual commit in your pull request is meaningful. If you had to make multiple intermediate commits while developing, please squash them before sending them to us.
-
-### Sub projects of Scaloid
-
- - [Scaloid common package](https://github.com/pocorall/scaloid) - This project
- - [Support-v4 package](https://github.com/pocorall/scaloid-support-v4) - Scaloid port of support-v4 compatibility library
- - [Scaloid-stamper](https://github.com/pocorall/scaloid-stamper) - A wrapper generator
-
-### License
-
-This software is licensed under the [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0.html).
-
-### List of projects using Scaloid
-
-* [Soundcorset metronome & tuner](http://blog.scaloid.org/2013/01/scaloid-powered-soundcorset-metronome.html)
-
-**Share your experience of using Scaloid** by blogging about it and let me know the URL of the post and the name of your Android application via pocorall@gmail.com. Then I will add a link to your post here.
-
-## Roadmap
-
-* **Cover full Android API versions** <br/>
-  Currently, only API level 8 is supported. Scaloid may not be compiled with below that API level, and new features introduced above that level are not covered.
-  Some of the features to be covered are:
-  1. Fragment
-  1. New system services
-  1. Action bar
-
-* **Build an example Android app** <br/>
-  Finish a [Scala port of apidemos app](https://github.com/pocorall/scaloid-apidemos) and try another.
-* **Build a dedicated website**
-* **Write a complete API document**
-* **Write the Beginner's guide**
-* **Build an example of laying out multiple UI**
-* **Write a converter that turns an XML layout into a Scaloid code** <br/>
-  [A simple web application](http://layout.scaloid.org) is demonstrated. Providing this functionality as an Eclipse or Intellij plugin would also be great.
-* **WYSIWYG layout builder**
-* **Cover full listener shortcuts**
-* **Cover OpenGL ES and renderscript**
-* **Automatically unregister SensorEventListener onStop()**
-* **Support Google services** <br/>
-  Including Google Cloud Messaging (GCM)
-* **iOS?**
-
-
+### We are hiring!
+The company behind Scaloid, onsquare is hiring Scala developers.
+We are building [a music app](https://play.google.com/store/apps/details?id=com.soundcorset.client.android) and other amazing products.
+We extensively uses Scaloid in our product, and probably it is the best reference of Scaloid application.
+For more information about our company, please refer to our website http://o-n2.com .
+Please send us your CV via email if you are interested in working at onsqure.
+We are located at Incheon, Korea.
+pocorall@gmail.com

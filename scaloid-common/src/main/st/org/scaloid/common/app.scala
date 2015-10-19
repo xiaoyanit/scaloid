@@ -4,14 +4,18 @@ package org.scaloid.common
 
 import android.app._
 import android.content._
+import android.graphics.drawable.{Drawable, StateListDrawable}
 import android.os._
 import android.view._
 import android.view.WindowManager.LayoutParams._
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 import Implicits._
+import scala.deprecated
 
 
-trait TraitActivity[V <: Activity] {
+trait TraitActivity[+This <: Activity] {
 
   @inline def contentView_=(p: View) = {
     basis.setContentView(p)
@@ -20,7 +24,9 @@ trait TraitActivity[V <: Activity] {
 
   @inline def contentView(p: View) = contentView_=(p)
 
-  $noGetter("contentView")$
+  @inline def contentView(implicit no: NoGetterForThisProperty): Nothing = throw new Error("Android does not support the getter for 'contentView'")
+
+  def intent = Some[Intent](basis.getIntent)
 
   def basis: Activity
 
@@ -39,9 +45,52 @@ trait TraitActivity[V <: Activity] {
   }
 }
 
-trait SActivity extends Activity with TraitContext[android.content.Context] with TraitActivity[SActivity] with Destroyable with Creatable with Registerable {
+/**
+ * Enriched trait for the class android.app.Activity.
+ * To enable Scaloid, inherit this trait instead of the class Activity.
+ *
+ * SActivity has shortcut methods for each lifecycle stages. These methods shorten the method overriding, which is
+ * very frequent for activity classes.
+ *
+ * For example, instead of this:
+ *
+ * {{{
+ *   override def onCreate(b: Bundle) {
+ *     super.onCreate(b)
+ *     // do something for onCreate
+ *   }
+ * }}}
+ *
+ * The equivalent is:
+ *
+ * {{{
+ *   onCreate {
+ *     // do something for onCreate
+ *   }
+ * }}}
+ * or
+ * {{{
+ *   onCreate(doSomething())
+ * }}}
+ *
+ * If the `Bundle` is needed in the `onCreate` call to restore saved state, a function can be supplied which accepts
+ * `Option[Bundle]`:
+ *
+ * {{{
+ *   onCreate { ob: Option[Bundle] =>
+ *     // do something for onCreate
+ *     ob.foreach { b =>
+ *       // do things if bundle was defined at onCreate time
+ *     }
+ *   }
+ * }}}
+ *
+ * In contrast of method overriding, this shortcut can be called multiple times from different places of your code.
+ *
+ */
+trait SActivity extends Activity with SContext with TraitActivity[SActivity] with Destroyable with Creatable with Registerable {
 
-  def basis = this
+  override def basis = this
   override implicit val ctx = this
 
   def onRegister(body: => Any) = onResume(body)
@@ -59,7 +108,17 @@ trait SActivity extends Activity with TraitContext[android.content.Context] with
 
   protected override def onCreate(b: Bundle) {
     super.onCreate(b)
-    onCreateBodies.foreach(_ ())
+    AppHelpers.createBundle.withValue(Option(b)) {
+      onCreateBodies.foreach(_ ())
+    }
+  }
+
+  def onCreate(body: Option[Bundle] => Any) = {
+    val el = { () =>
+      body(AppHelpers.createBundle.value)
+    }
+    onCreateBodies += el
+    el
   }
 
   override def onStart {
@@ -70,7 +129,7 @@ trait SActivity extends Activity with TraitContext[android.content.Context] with
   protected val onStartBodies = new ArrayBuffer[() => Any]
 
   def onStart(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onStartBodies += el
     el
   }
@@ -83,7 +142,7 @@ trait SActivity extends Activity with TraitContext[android.content.Context] with
   protected val onResumeBodies = new ArrayBuffer[() => Any]
 
   def onResume(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onResumeBodies += el
     el
   }
@@ -96,7 +155,7 @@ trait SActivity extends Activity with TraitContext[android.content.Context] with
   protected val onPauseBodies = new ArrayBuffer[() => Any]
 
   def onPause(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onPauseBodies += el
     el
   }
@@ -109,7 +168,7 @@ trait SActivity extends Activity with TraitContext[android.content.Context] with
   protected val onStopBodies = new ArrayBuffer[() => Any]
 
   def onStop(body: => Any) = {
-    val el = (() => body)
+    val el = body _
     onStopBodies += el
     el
   }
@@ -120,33 +179,36 @@ trait SActivity extends Activity with TraitContext[android.content.Context] with
   }
 }
 
+
 /**
- * Follows a parent's action of onBackPressed().
- * When an activity is a tab that hosted by TabActivity, you may want a common back-button action for each tab.
+ * Enriched trait of the class android.app.Service. To enable Scaloid support for subclasses of android.app.Service, extend this trait.
+ */
+trait SService extends Service with SContext with Destroyable with Creatable with Registerable {
+  override def basis = this
+  override implicit val ctx = this
+
+  def onRegister(body: => Any) = onCreate(body)
+  def onUnregister(body: => Any) = onDestroy(body)
+
+  override def onCreate() {
+    super.onCreate()
+    onCreateBodies.foreach(_ ())
+  }
+
+  override def onDestroy() {
+    onDestroyBodies.foreach(_ ())
+    super.onDestroy()
+  }
+}
+
+/**
+ * An in-process service that can be bound with [[LocalServiceConnection]]. This yields far more concise code than that uses plain-old Android API.
  *
- * Please refer http://stackoverflow.com/questions/2796050/key-events-in-tabactivities
+ * Please refer to the URL below for more details.
+ *
+ * [[http://blog.scaloid.org/2013/03/introducing-localservice.html]]
  */
-trait FollowParentBackButton extends SActivity {
-  override def onBackPressed() {
-    val p = getParent
-    if (p != null) p.onBackPressed()
-  }
-}
-
-/**
- * Turn screen on and show the activity even if the screen is locked.
- * This is useful when notifying some important information.
- */
-trait ScreenOnActivity extends SActivity {
-  onCreate {
-    getWindow.addFlags(FLAG_DISMISS_KEYGUARD | FLAG_SHOW_WHEN_LOCKED | FLAG_TURN_SCREEN_ON)
-  }
-}
-
-
-$wholeClassDef(android.app.Service)$
-
-trait LocalService extends TraitService[android.app.Service] {
+trait LocalService extends SService {
   private val binder = new ScaloidServiceBinder
 
   def onBind(intent: Intent): IBinder = binder
@@ -157,7 +219,24 @@ trait LocalService extends TraitService[android.app.Service] {
 
 }
 
-
+/**
+ * A Scala-style builder for AlertDialog.
+ * {{{
+ *  new AlertDialogBuilder("Exit the app", "Do you really want to exit?") {
+ *    positiveButton("Exit", finishTheApplication())
+ *    negativeButton("Cancel")
+ *  }.show()
+ * }}}
+ * This displays an alert dialog with given string resources.
+ *
+ * Although this builder displays some UI element, this builder can be called from any thread, because the method `show()` handles threading internally.
+ *
+ * Please refer to the URL below for more details.
+ *
+ * [[https://github.com/pocorall/scaloid/wiki/Basics#class-alertdialogbuilder]]
+ *
+ * See also: `alert()`
+ */
 class AlertDialogBuilder(_title: CharSequence = null, _message: CharSequence = null)(implicit context: Context) extends AlertDialog.Builder(context) {
   if (_title != null) setTitle(_title)
   if (_message != null) setMessage(_message)
@@ -207,11 +286,50 @@ class AlertDialogBuilder(_title: CharSequence = null, _message: CharSequence = n
   var msg: CharSequence = null
 
   @inline def message_=(str: CharSequence) = {
-    tit = str
+    msg = str
     setMessage(str)
   }
 
-  @inline def message = tit
+  @inline def message = msg
 
-  override def show():AlertDialog = runOnUiThread(super.show())
+  /**
+   * Shows the dialog that is currently building.
+   * Because this method runs runOnUiThread internally, you can call this method from any thread.
+   * This method blocks until the dialog has been built in the UI thread.
+   */
+  override def show(): AlertDialog = Await.result(evalOnUiThread(super.show()), Duration.Inf)
+}
+
+/**
+ * Scaloid wrapper of android.graphics.drawable.StateListDrawable.
+ * You can write StateListDrawable simply, for example:
+ * {{{
+ * new SStateListDrawable {
+ *   +=(R.drawable.pressed, PRESSED)
+ *   +=(R.drawable.normal)
+ * }
+ * }}}
+ */
+class SStateListDrawable extends StateListDrawable {
+  val ABOVE_ANCHOR = android.R.attr.state_above_anchor
+  val ACTIVE = android.R.attr.state_active
+  val CHECKABLE = android.R.attr.state_checkable
+  val CHECKED = android.R.attr.state_checked
+  val EMPTY = android.R.attr.state_empty
+  val ENABLED = android.R.attr.state_enabled
+  val EXPANDED = android.R.attr.state_expanded
+  val FIRST = android.R.attr.state_first
+  val FOCUSED = android.R.attr.state_focused
+  val LAST = android.R.attr.state_last
+  val LONG_PRESSABLE = android.R.attr.state_long_pressable
+  val MIDDLE = android.R.attr.state_middle
+  val PRESSED = android.R.attr.state_pressed
+  val SELECTED = android.R.attr.state_selected
+  val SINGLE = android.R.attr.state_single
+  val WINDOW_FOCUSED = android.R.attr.state_window_focused
+
+  def +=(drawable: Drawable, states: Int*): SStateListDrawable = {
+    addState(states.toArray, drawable)
+    this
+  }
 }

@@ -1,5 +1,8 @@
-FrameLayout_concreteBody() ::= <<
-implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = new LayoutParams(v)
+FrameLayout_traitBody() ::= <<
+implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+  case p: LayoutParams[V @unchecked] => p
+  case _ => new LayoutParams(v)
+}
 
 class LayoutParams[V <: View](v: V) extends FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
 
@@ -12,16 +15,59 @@ class LayoutParams[V <: View](v: V) extends FrameLayout.LayoutParams(MATCH_PAREN
     this
   }
 
-  def parent = SFrameLayout.this
+  def parent = TraitFrameLayout.this
 
   def >\> : V = v
 
 }
 >>
 
+ListView_traitBody() ::= <<
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setAdapter(android.widget.ListAdapter) setAdapter(android.widget.ListAdapter)]]`
+   * This method is for compatibility with Android API Level 10, which does not has AbstractListView.setAdapter().
+   */
+  @inline override def adapter(p: android.widget.ListAdapter) = adapter_=(p)
+
+  /**
+   * Shortcut for `[[https://developer.android.com/reference/android/widget/ListView.html#setAdapter(android.widget.ListAdapter) setAdapter(android.widget.ListAdapter)]]`
+   * This method is for compatibility with Android API Level 10, which does not has AbstractListView.setAdapter().
+   */
+  @inline override def adapter_=(p: android.widget.ListAdapter) = { basis.setAdapter(p); basis }
+>>
+
+TextView_traitBody() ::= <<
+import android.graphics.drawable.Drawable
+
+ def drawableLeft(img: Drawable) = {
+   basis.setCompoundDrawablesWithIntrinsicBounds(img, null, null, null)
+   basis
+ }
+
+ def drawableTop(img: Drawable) = {
+   basis.setCompoundDrawablesWithIntrinsicBounds(null, img, null, null)
+   basis
+ }
+
+ def drawableRight(img: Drawable) = {
+   basis.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+   basis
+ }
+
+ def drawableBottom(img: Drawable) = {
+   basis.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img)
+   basis
+ }
+
+  @inline def textSize  (p: Int) =            textSize_=  (p)
+  @inline def textSize_=(p: Int) = { basis.setTextSize    (android.util.TypedValue.COMPLEX_UNIT_PX, p); basis }
+>>
 
 RelativeLayout_concreteBody() ::= <<
-implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = new LayoutParams(v)
+implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+  case p: LayoutParams[V @unchecked] => p
+  case _ => new LayoutParams(v)
+}
 
 class LayoutParams[V <: View](v: V) extends RelativeLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
   def basis = this
@@ -38,13 +84,13 @@ class LayoutParams[V <: View](v: V) extends RelativeLayout.LayoutParams(MATCH_PA
     this
   }
 
-  def alignBaseline = {
-    addRule(RelativeLayout.ALIGN_BASELINE)
+  def alignBaseline(otherView: View)(implicit activity: Activity) = {
+    addRule(RelativeLayout.ALIGN_BASELINE, otherView.uniqueId)
     this
   }
 
-  def alignBottom = {
-    addRule(RelativeLayout.ALIGN_BOTTOM)
+  def alignBottom(otherView: View)(implicit activity: Activity) = {
+    addRule(RelativeLayout.ALIGN_BOTTOM, otherView.uniqueId)
     this
   }
 
@@ -53,8 +99,8 @@ class LayoutParams[V <: View](v: V) extends RelativeLayout.LayoutParams(MATCH_PA
   //  this
   //}
 
-  def alignLeft = {
-    addRule(RelativeLayout.ALIGN_LEFT)
+  def alignLeft(otherView: View)(implicit activity: Activity) = {
+    addRule(RelativeLayout.ALIGN_LEFT, otherView.uniqueId)
     this
   }
 
@@ -88,8 +134,8 @@ class LayoutParams[V <: View](v: V) extends RelativeLayout.LayoutParams(MATCH_PA
     this
   }
 
-  def alignRight = {
-    addRule(RelativeLayout.ALIGN_RIGHT)
+  def alignRight(otherView: View)(implicit activity: Activity) = {
+    addRule(RelativeLayout.ALIGN_RIGHT, otherView.uniqueId)
     this
   }
 
@@ -98,8 +144,8 @@ class LayoutParams[V <: View](v: V) extends RelativeLayout.LayoutParams(MATCH_PA
   //  this
   //}
 
-  def alignTop = {
-    addRule(RelativeLayout.ALIGN_TOP)
+  def alignTop(otherView: View)(implicit activity: Activity) = {
+    addRule(RelativeLayout.ALIGN_TOP, otherView.uniqueId)
     this
   }
 
@@ -145,10 +191,14 @@ LinearLayout_concreteBody() ::= <<
 val VERTICAL = LinearLayout.VERTICAL
 val HORIZONTAL = LinearLayout.HORIZONTAL
 
-implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = new LayoutParams(v)
+implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+  case p: LayoutParams[V @unchecked] => p
+  case _ => new LayoutParams(v)
+}
+
+<<
 
 class LayoutParams[V <: View](v: V) extends LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
-
   def basis = this
 
   v.setLayoutParams(this)
@@ -169,6 +219,57 @@ class LayoutParams[V <: View](v: V) extends LinearLayout.LayoutParams(MATCH_PARE
 }
 >>
 
+TableLayout_concreteBody() ::= <<
+implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+  case p: LayoutParams[V @unchecked] => p
+  case _ => new LayoutParams(v)
+}
+
+class LayoutParams[V <: View](v: V) extends TableLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 1.0f) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
+  def basis = this
+
+  v.setLayoutParams(this)
+
+  def parent = STableLayout.this
+
+  def >\> : V = v
+}
+>>
+
+TableRow_concreteBody() ::= <<
+implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+  case p: LayoutParams[V @unchecked] => p
+  case _ => new LayoutParams(v)
+}
+
+class LayoutParams[V <: View](v: V) extends TableRow.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 1.0f) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
+  def basis = this
+
+  v.setLayoutParams(this)
+
+  def parent = STableRow.this
+
+  def >\> : V = v
+}
+>>
+
+RadioGroup_concreteBody() ::= <<
+implicit def defaultLayoutParams[V <: View](v: V): LayoutParams[V] = v.getLayoutParams() match {
+  case p: LayoutParams[V @unchecked] => p
+  case _ => new LayoutParams(v)
+}
+
+class LayoutParams[V <: View](v: V) extends LinearLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT, 1.0f) with ViewGroupMarginLayoutParams[LayoutParams[V], V] {
+  def basis = this
+
+  v.setLayoutParams(this)
+
+  def parent = SRadioGroup.this
+
+  def >\> : V = v
+}
+>>
+
 
 ArrayAdapter_concreteBody() ::= <<
 def setItem(view: TextView, pos: Int): TextView = {
@@ -181,24 +282,24 @@ def setItem(view: TextView, pos: Int): TextView = {
 
 override def getView(position: Int, convertView: View, parent: ViewGroup): View = {
   val v = super.getView(position, convertView, parent)
-  if (_style != null) _style(v.asInstanceOf[TextView]) else v
+  if (_style != null) _style(v.asInstanceOf[V]) else v
 }
 
-private var _style: TextView => TextView = null
+protected var _style: V => V = null
 
-def style(v: TextView => TextView) = {
+def style(v: V => V) = {
   _style = v
   this
 }
 
 override def getDropDownView(position: Int, convertView: View, parent: ViewGroup): View = {
   val v = super.getDropDownView(position, convertView, parent)
-  if (_dropDownStyle != null) _dropDownStyle(v.asInstanceOf[TextView]) else v
+  if (_dropDownStyle != null) _dropDownStyle(v.asInstanceOf[V]) else v
 }
 
-private var _dropDownStyle: TextView => TextView = null
+protected var _dropDownStyle: V => V = null
 
-def dropDownStyle(v: TextView => TextView) = {
+def dropDownStyle(v: V => V) = {
   _dropDownStyle = v
   this
 }

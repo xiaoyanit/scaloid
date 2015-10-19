@@ -4,18 +4,47 @@ import android.app._
 import android.content._
 import android.os._
 import android.view._
-import annotation.target.{beanGetter, getter}
 
 import language.implicitConversions
+import scala.concurrent._
+import scala.util.Try
 
 /**
- * Common Scaloid Package
+ * Scaloid marries Android code with Scala resulting in easier to understand
+ * and maintain code.
  *
- * @see [[org.scaloid.TermsAndConditions]]
+ *
+ * @example
+ *
+ * {{{
+ * import org.scaloid.common._
+ *
+ * class MainActivity extends SActivity {
+ *
+ *   onCreate {
+ *     contentView = new SVerticalLayout {
+ *       setTheme(android.R.style.Theme_Holo_NoActionBar)
+ *
+ *       style {
+ *         case b:SButton => b.textSize(22 dip)
+ *       }
+ *
+ *       STextView("Welcome").textSize(22 sp).<<.marginBottom(22 dip).>>
+ *
+ *       val name = SEditText()
+ *       STextView("What is your name?").<<.marginBottom(22 dip).>>
+ *
+ *       SButton("GO").onClick(longToast("Hello, " + name.getText))
+ *     }.padding(20 dip)
+ *   }
+ * }
+ * }}}
+ *
+ * @see [[http://scaloid.org]]
  *
  * @author Sung-Ho Lee
  */
-package object common extends Logger with SystemService with Helpers with Implicits {
+package object common extends Logger with SystemServices with Helpers with Implicits {
 
   val idSequence = new java.util.concurrent.atomic.AtomicInteger(0)
 
@@ -35,16 +64,29 @@ package object common extends Logger with SystemService with Helpers with Implic
 
   lazy val uiThread = Looper.getMainLooper.getThread
 
-  def runOnUiThread[T >: Null](f: => T): T = {
+  def runOnUiThread(f: => Unit): Unit = {
     if (uiThread == Thread.currentThread) {
-      return f
+      f
     } else {
       handler.post(new Runnable() {
         def run() {
           f
         }
       })
-      return null
+    }
+  }
+
+  def evalOnUiThread[T](f: => T): Future[T] = {
+    if (uiThread == Thread.currentThread) {
+      Future.fromTry(Try(f))
+    } else {
+      val p = Promise[T]()
+      handler.post(new Runnable() {
+        def run() {
+          p.complete(Try(f))
+        }
+      })
+      p.future
     }
   }
 
